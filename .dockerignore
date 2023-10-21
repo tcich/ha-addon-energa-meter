@@ -1,0 +1,7 @@
+env/
+__pycache__
+src/database.sqlite
+src/config.ini
+import.py
+check.py
+Dockerfile
