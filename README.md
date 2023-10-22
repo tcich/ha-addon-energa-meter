@@ -116,9 +116,11 @@ gdzie:
 2) Klikamy New -> New dashboard -> Add visualization
 3) Wskazujemy Data source: ENERGA
 4) W **Path** wpisujemy: GET: /charts/12335379 (id Twojego licznika)
-5) W **Fields** wpisujemy $.charts[*].czas typu Time oraz $.charts[*].value typu number z aliasem kWh
+5) W **Fields** wpisujemy \$.charts\[\*\].czas typu Time oraz $.charts[*].value typu number z aliasem kWh
 5) W **Params** wpisujemy Key: start_date Value: $__from
 6) W **Params** wpisujemy Key: end_date Value: $__to
+
+![Grafana path](https://github.com/tcich/ha-addon-energa-meter/blob/main/img/grafana_06.png "Grafana")
 
 ![Grafana path](https://github.com/tcich/ha-addon-energa-meter/blob/main/img/grafana_02.png "Grafana")
 
