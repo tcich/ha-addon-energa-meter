@@ -1,6 +1,6 @@
 name: "Energa meter"
 description: "Energa meter addon"
-version: "0.1.0"
+version: "0.1.1"
 slug: "energa_meter"
 init: false
 options:

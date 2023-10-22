@@ -110,39 +110,50 @@ class MojLicznik:
         try:
             response = self.session.post(login_url, data=login_data)
             response.raise_for_status()
-            self.loginStatus = True
-            print(f"Zalogowano")
+            
+            
         except HTTPError as e:
             print(f"Wystąpił błąd HTTP: {e}")        
 
         soup = BeautifulSoup(response.text, 'html.parser')
-        select_elements = soup.find_all('script', type='text/javascript')
-        meter_isd = []
-        for el in select_elements:
-            pattern = r"id:\s+(\d+),[\s\S]*?ppe:\s+'([\d\s]+)',[\s\S]*?tariffCode:\s+'([^']+)',[\s\S]*?name:\s+'([^']+)'"
-            matches = re.search(pattern, el.text)
-            if matches:
-                id_value = matches.group(1)
-                ppe_value = matches.group(2)
-                tariffCode_value = matches.group(3)
-                name_value = matches.group(4)
-                meter_isd.append(id_value)
-                retrieved_record = PPETable.get_or_none(id=id_value)
-                if retrieved_record:
-                    print(f"Licznik {id_value} istnieje w systemie.")
-                    if not retrieved_record.is_active:
-                        retrieved_record.is_active = True
-                        retrieved_record.save()                   
-                else:
-                    print(f"Licznik {id_value} nie istnieje w systemie.")
-                    data = PPETable.create(
-                            id=id_value,
-                            ppe=ppe_value,
-                            tariffCode=tariffCode_value,
-                            name=name_value
-                        )                    
-        update_query = PPETable.update(is_active=0).where(PPETable.id.not_in(meter_isd))
-        update_query.execute()       
+
+        login_error_text = 'Użytkownik lub hasło niepoprawne'
+        login_error = soup.find('div', text=login_error_text)
+
+        if login_error:
+            self.loginStatus = False
+            print(login_error_text)
+        else:
+            self.loginStatus = True
+            print(f"Zalogowano")
+
+            select_elements = soup.find_all('script', type='text/javascript')
+            meter_isd = []
+            for el in select_elements:
+                pattern = r"id:\s+(\d+),[\s\S]*?ppe:\s+'([\d\s]+)',[\s\S]*?tariffCode:\s+'([^']+)',[\s\S]*?name:\s+'([^']+)'"
+                matches = re.search(pattern, el.text)
+                if matches:
+                    id_value = matches.group(1)
+                    ppe_value = matches.group(2)
+                    tariffCode_value = matches.group(3)
+                    name_value = matches.group(4)
+                    meter_isd.append(id_value)
+                    retrieved_record = PPETable.get_or_none(id=id_value)
+                    if retrieved_record:
+                        print(f"Licznik {id_value} istnieje w systemie.")
+                        if not retrieved_record.is_active:
+                            retrieved_record.is_active = True
+                            retrieved_record.save()                   
+                    else:
+                        print(f"Licznik {id_value} nie istnieje w systemie.")
+                        data = PPETable.create(
+                                id=id_value,
+                                ppe=ppe_value,
+                                tariffCode=tariffCode_value,
+                                name=name_value
+                            )                    
+            update_query = PPETable.update(is_active=0).where(PPETable.id.not_in(meter_isd))
+            update_query.execute()       
 
     def logout(self):
         logout_url = f"{self.meter_url}/dp/MainLogout.go"
