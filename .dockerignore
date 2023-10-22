@@ -2,6 +2,7 @@ env/
 __pycache__
 src/database.sqlite
 src/config.ini
+config.ini
 import.py
 check.py
 Dockerfile
