@@ -2,10 +2,12 @@
 
 src/database.sqlite
 src/config.ini
+src/rund.sh
 import.py
 check.py
 database.sqlite
 config.ini
+Dockerfile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
