@@ -20,11 +20,12 @@ def main():
         print(f"Update...{datetime.datetime.now()}")
         print(f"Logowanie...")
         mojLicznik.login(username, password)
-        print(f"Aktualizacja danych bieżących...")
-        mojLicznik.uppdate_measurments()
-        mojLicznik.update_last_days()
-        mojLicznik.set_daily_zones()
-        mojLicznik.logout()
+        if mojLicznik.loginStatus:
+            print(f"Aktualizacja danych bieżących...")
+            mojLicznik.uppdate_measurments()
+            mojLicznik.update_last_days()
+            mojLicznik.set_daily_zones()
+            mojLicznik.logout()
     except:
         print("Błąd aktualizacji danych...")
 
