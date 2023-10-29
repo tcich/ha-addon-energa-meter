@@ -1,14 +1,16 @@
 name: "Energa meter"
 description: "Energa meter addon"
-version: "0.1.1"
+version: "0.1.2"
 slug: "energa_meter"
 init: false
 options:
   energa_username: ""
   energa_password: ""
+  log_level: "INFO"
 schema:
   energa_username: str
   energa_password: password
+  log_level: str
 arch:
   - aarch64
   - amd64

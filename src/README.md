@@ -18,7 +18,7 @@
 
 ## O dodatku
 
-To jest dodatek dla [Home Assistant](https://www.home-assistant.io/). Instalacja dodatku [Energa meter](https://github.com/tcich/ha-addon-energa-meter) umożliwia cykliczne pobieranie danych z aplikacji [Mój Licznik - Energa](https://mojlicznik.energa-operator.pl) udostępnianej klientom Operatora energetycznego Energa
+To jest dodatek dla [Home Assistant](https://www.home-assistant.io/). Instalacja dodatku [Energa meter](https://github.com/tcich/ha-addon-energa-meter) umożliwia cykliczne pobieranie danych z aplikacji [Mój Licznik - Energa](https://mojlicznik.energa-operator.pl) udostępnianej klientom Operatora energetycznego Energa, pobierane są zarówno aktualne stany liczników jak i dane historyczne. Dzieki temu możliwe jest generowanie wykresów oraz analiza danych z użyciem zaawansowanych narzędzi, np. Grafana
 
 ## Możliwości:
 * Obsługa liczników jako sensory
@@ -31,3 +31,5 @@ Instrukcja instalacji jest dostępna pod adresem: [Instrukcja konfiguracji](http
 ## Motywacja
 
 **Podoba Ci się?** [Postaw kawę.](https://buycoffee.to/tcich)
+
+

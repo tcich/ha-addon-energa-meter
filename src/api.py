@@ -1,37 +1,62 @@
 from peewee import SqliteDatabase
 from flask import Flask, jsonify, request, redirect, url_for
 from waitress import serve
-import time
-from datetime import datetime
-from moj_licznik import PPETable, MainChartTable
+import time, os, logging
+from moj_licznik import PPETable, MeterTable, CounterTable, MainChartTable
 
-DEBUG = False
+logger = logging.getLogger("energaMeter.api")
+
+
+path = os.path.dirname(os.path.abspath(__file__))
+db_file = 'database.sqlite'
+db = SqliteDatabase(os.path.join(path, db_file))
 
 app = Flask(__name__)
 
-db = SqliteDatabase('database.sqlite')
-
 @app.route('/', methods=['GET'])
 def root_redirect():
-    query = PPETable.select().where(PPETable.is_active == True)
+    query = PPETable.select() #.where(PPETable.is_active == True)
     result_ppes = list(query)
-    meters = []
-
+    ppes = []
     for p in result_ppes:
-        meter = {
-            'name': p.name,
-            'id': p.id
-        }
+        meters_query = MeterTable.select().where(MeterTable.ppe_id == p.id)
+        meter_result = meters_query.execute()
+        meters = []
+        for meter in meter_result:
+            countners_query = CounterTable.select().where(CounterTable.meter_id == meter.id)
+            countners_result = countners_query.execute()
+            countners = []
+            for countner in countners_result:
+                countner = {
+                    'tariff': countner.tariff,
+                    'measurement_date': countner.measurement_date,
+                    'meter_value': countner.meter_value
+                }
+                countners.append(countner)
 
-        meters.append(meter)
-    if DEBUG:
-        print("API: GET /")
+            meter = {
+                'meter_type': meter.meter_type,
+                'last_update_date': meter.last_update_date,
+                'first_date': meter.first_date,
+                'countners': countners
+            }
+            meters.append(meter)
+
+        ppe = {
+            'name': p.name,
+            'id': p.id,
+            'type': p.type,
+            'isActive': p.is_active,
+            'meters': meters
+        }
+        ppes.append(ppe)
+    logger.debug("API: GET /")
     
-    return jsonify({'meters': meters})
+    return jsonify({'ppes': ppes})
 
 @app.route('/meters', methods=['GET'])
 def meters():
-    query = PPETable.select().where(PPETable.is_active == True)
+    query = PPETable.select() #.where(PPETable.is_active == True)
     result_ppes = list(query)
     meters = []
 
@@ -40,11 +65,11 @@ def meters():
             'name': p.name,
             'id': p.id,
             'ppe': p.ppe,
-            'number_of_zones': p.number_of_zones,
+            'number_of_zones': '',#p.number_of_zones,
             'tariffCode': p.tariffCode,
-            'first_date': p.first_date,
+            # 'first_date': p.first_date,
             'last_update_date': p.last_update_date,
-            'measurement_date': p.measurement_date,
+            # 'measurement_date': p.measurement_date,
         }
 
         for i in range(1, p.number_of_zones + 1):
@@ -65,8 +90,7 @@ def meters():
             }
 
         meters.append(meter)
-    if DEBUG:
-        print("API: GET /")
+    logger.debug("GET /meters")
     
     return jsonify({'meters': meters})
 
@@ -111,37 +135,28 @@ def get_meter(meter_id):
     else:
         return jsonify({'error': 'Meter not found'}, 404)
 
+@app.route('/<int:ppe_id>', methods=['GET'])
+def get_ppe(ppe_id):
+    query = PPETable.select().where((PPETable.is_active == True) & (PPETable.id == ppe_id))
+    result_ppes = list(query)
 
-# @app.route('/meters/<int:meter_id>', methods=['GET'])
-# def get_meter(meter_id):
-#     query = PPETable.select().where((PPETable.is_active == True) & (PPETable.id == meter_id))
-#     result_ppes = list(query)
+    if result_ppes:
+        p = result_ppes[0]  # There should be only one matching record
 
-#     if result_ppes:
-#         p = result_ppes[0]  # There should be only one matching record
+        meter = {
+            'name': p.name,
+            'id': p.id,
+            'ppe': p.ppe,
+            'tariffCode': p.tariffCode,
+            'last_update_date': p.last_update_date,
+            'is_active': p.is_active
+        }
 
-#         meter = {
-#             'name': p.name,
-#             'id': p.id,
-#             'ppe': p.ppe,
-#             'number_of_zones': p.number_of_zones,
-#             'tariffCode': p.tariffCode,
-#             'first_date': p.first_date,
-#             'last_update_date': p.last_update_date,
-#             'measurement_date': p.measurement_date
-#         }
+        logger.debug(f"API: GET /meters/{ppe_id}")
+        return jsonify({'meter': meter})
+    else:
+        return jsonify({'error': 'Meter not found'}, 404)
 
-#         for i in range(1, p.number_of_zones + 1):
-#             zone_key = f'zone{i}'
-#             daily_chart_key = f'zone{i}_daily_chart_sum'
-
-#             meter[zone_key] = getattr(p, zone_key)
-#             meter[daily_chart_key] = getattr(p, daily_chart_key)
-
-#         print(f"API: GET /meters/{meter_id}")
-#         return jsonify({'meter': meter})
-#     else:
-#         return jsonify({'error': 'Meter not found'}, 404)
 
 @app.route('/charts/<mp>', methods=['GET'])
 def charts(mp):
@@ -165,9 +180,7 @@ def charts(mp):
         }
         charts.append(chart)
     end_time = time.time()
-
-    if DEBUG:
-        print(f"API: GET / - {start_date} - {end_date}")
+    logger.debug(f"API: GET / - {start_date} - {end_date}")
 
     return jsonify({'charts': charts})
 
@@ -194,10 +207,7 @@ def charts_zone(mp, zone):
         charts.append(chart)
     end_time = time.time()
 
-    if DEBUG:
-        print(f"API: GET / - {start_date} - {end_date}")
+    logger.debug(f"API: GET / - {start_date} - {end_date}")
 
     return jsonify({'charts': charts})
 
-if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=8000, threads=8)    
