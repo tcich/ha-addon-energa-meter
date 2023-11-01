@@ -33,21 +33,27 @@ def startup_task():
 
 # Moduł 3: Cykliczne zadanie
 def periodic_task():
-    try:
-        startup_task_completed.wait()
-        mojLicznik = MojLicznik()
-        logger.info(f"Update...{datetime.datetime.now()}")
-        logger.info(f"Logowanie...")
-        mojLicznik.login(username, password)
-        if mojLicznik.loginStatus:
-            logger.info(f"Aktualizacja danych bieżących...")
-            mojLicznik.update_countners()
-            mojLicznik.update_last_days()
-            # mojLicznik.set_daily_zones()
-            mojLicznik.logout()
-    except:
-        logger.error("Błąd aktualizacji danych...")
-    time.sleep(3000)
+    startup_task_completed.wait()
+    while True:
+        try:    
+            waiting_seconds = 600
+            logger.info(f"Oczekianie...")
+            logger.debug(f"Czekam {waiting_seconds} sekund.")
+            time.sleep(waiting_seconds)        
+            mojLicznik = MojLicznik()
+            logger.info(f"Update...{datetime.datetime.now()}")
+            logger.info(f"Logowanie...")
+            mojLicznik.login(username, password)
+            if mojLicznik.loginStatus:
+                logger.info(f"Aktualizacja danych bieżących...")
+                mojLicznik.update_countners()
+                mojLicznik.update_last_days()
+                mojLicznik.download_charts(full_mode=False)
+                # mojLicznik.set_daily_zones()
+                mojLicznik.logout()
+        except:
+            logger.error("PT001: Błąd aktualizacji danych...")
+    
 
 # Uruchomienie wątków dla każdego modułu
 if __name__ == "__main__":
@@ -72,6 +78,10 @@ if __name__ == "__main__":
 
     configure_logging(log_level, logger_name)
     logger = logging.getLogger(logger_name)
+
+    peewee_logger = logging.getLogger('peewee')
+    peewee_logger.setLevel(logging.ERROR)  # Ustaw poziom na ERROR lub inny poziom, który jest wyższy niż ustawiony w configure_logging
+
     logger.info("Inicjalizacja OK.")
     http_server_thread = threading.Thread(target=http_server)
     startup_task_thread = threading.Thread(target=startup_task)

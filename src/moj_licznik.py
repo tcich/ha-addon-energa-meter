@@ -359,7 +359,6 @@ class MojLicznik:
         for val in vals:
             #try:
                 z = val["zones"]
-                # {"tm": "1690412400000", "tarAvg": 0.3899153269199055, "zones": [null, 0.232, null], "est": false, "cplt": true}, 
                 if z[0]:
                     # MainChartTable.get_or_create(tm = val["tm"], zone = 1, value = z[0], tarAvg=val["tarAvg"], est=val["est"], cplt=val["cplt"])
                     try:
@@ -477,20 +476,20 @@ class MojLicznik:
         query = PPETable.select().where(PPETable.is_active == True)
         result_ppes = query.execute()
         for p in result_ppes:
-            meters_query = MeterTable.select().where((MeterTable.ppe_id == p.id) & (MeterTable.first_date.is_null(True)))
+            meters_query = MeterTable.select().where((MeterTable.ppe_id == p.id)) # // & (MeterTable.first_date.is_null(True)))
             meters_result = meters_query.execute()
 
             for meter in meters_result:
                 meter_type = meter.meter_type
 
                 logger.info(f"Pobieram dane historyczne dla {p.name} ({p.id}) typ: {meter_type}")
-                current_date = p.first_date
+                current_date = meter.first_date
                 if not full_mode:
-                    current_date = p.measurement_date - timedelta(days=1)
+                    current_date = meter.last_update_date - timedelta(days=1)
                 
                 while current_date <= date.today():
                     try:
-                        record = ChartTable.get(id=p.id, year=current_date.year, month=current_date.month, day=current_date.day)
+                        record = ChartTable.get(id=p.id, meter_type=meter_type, year=current_date.year, month=current_date.month, day=current_date.day)
                         # Jeśli rekord o określonych wartościach klucza głównego istnieje, zostanie pobrany.
                         logger.debug(f"Posiadam dane historyczne dla {p.name} ({p.id}) typ: {meter_type} na dzień: {current_date}")
                     except ChartTable.DoesNotExist:
