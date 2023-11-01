@@ -1,3 +1,5 @@
+## v0.1.3 [2023-10-31]
+- Dodano obsługę liczników wytwórcy (Uwaga: zmiana struktury JSON)
 ## v0.1.2 [2023-10-23]
 - Dodano obsługę trybu serwisowego aplikacji Mój Licznik
 - Poprawiono logowanie błędów
