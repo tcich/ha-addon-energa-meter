@@ -17,8 +17,6 @@
 [kawa-logo]: https://github.com/tcich/ha-addon-energa-meter/blob/main/img/buycoffeeto-btn-primary-outline.png
 [kawa]: https://buycoffee.to/tcich
 
-<a href="https://buycoffee.to/tcich"><img src="../img/logo-buycoffee-wide.jpg" width=200 alt="Postaw kawę"></a>
-
 ## O dodatku
 
 To jest dodatek dla [Home Assistant](https://www.home-assistant.io/). Instalacja dodatku [Energa meter](https://github.com/tcich/ha-addon-energa-meter) umożliwia cykliczne pobieranie danych z aplikacji [Mój Licznik - Energa](https://mojlicznik.energa-operator.pl) udostępnianej klientom Operatora energetycznego Energa.
