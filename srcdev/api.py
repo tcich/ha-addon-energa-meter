@@ -139,7 +139,6 @@ def get_ppe(ppe_id):
 def get_meter_type(ppe_id, meter_type_url):
         meter_type = urllib.parse.unquote(meter_type_url)
         meters_query = MeterTable.select().where((MeterTable.ppe_id == str(ppe_id)) & (MeterTable.meter_type == meter_type))
-        #meters_query = MeterTable.select().where(MeterTable.ppe_id == str(ppe_id) & MeterTable.meter_type == meter_type)
         meter_result = meters_query.execute()
         if not meter_result:
              abort(404)
@@ -174,7 +173,7 @@ def get_countners(ppe_id, meter_type_url, tariff):
         meters_query = MeterTable.select().where((MeterTable.ppe_id == str(ppe_id)) & (MeterTable.meter_type == meter_type))
         meter_result = meters_query.execute()
 
-        if meter_result.count < 1:
+        if not meter_result:
             abort(404)
 
         meter = meter_result[0]
