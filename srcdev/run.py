@@ -21,7 +21,7 @@ def startup_task():
     if mojLicznik.loginStatus:
         logger.info(f"Aktualizacja liczników...")
         mojLicznik.update_countners()
-        logger.info(f"Wyszukiwanie najstarszych danych...")
+        logger.info(f"Wyszukiwanie najstarszych danych...(Może to trwać kilkadziesiąt minut.)")
         mojLicznik.update_first_date()
         logger.info(f"Pobieranie danych...")
         mojLicznik.download_charts(full_mode=True)
@@ -37,7 +37,7 @@ def periodic_task():
     while True:
         try:    
             waiting_seconds = 600
-            logger.info(f"Oczekianie...")
+            logger.info(f"Oczekiwanie...")
             logger.debug(f"Czekam {waiting_seconds} sekund.")
             time.sleep(waiting_seconds)        
             mojLicznik = MojLicznik()

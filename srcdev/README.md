@@ -109,7 +109,7 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 4) Klikamy Save&test (3)
 5) Uwaga: Jeżeli Grafana jest addonem w HA użyj właściwej nazwy hosta dostępnej w docker.
 
-<img src="img/addon.png" style="width: 80%;" alt="Nazwa hosta">
+<img src="https://github.com/tcich/ha-addon-energa-meter/blob/e702ed49436fb9e0b675dcac3001bd9de5aab3c0/srcdev/img/addon.png" style="width: 80%;" alt="Nazwa hosta">
 
 <img src="img/grafana_01.png" style="width: 80%;" alt="Grafana źródło danych">
 
