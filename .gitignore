@@ -7,7 +7,7 @@ import.py
 check.py
 database.sqlite
 config.ini
-Dockerfile
+/Dockerfile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
