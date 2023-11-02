@@ -3,6 +3,7 @@ FROM $BUILD_FROM
 
 RUN apk add --no-cache python3
 RUN apk add --update py3-pip
+
 # Copy data for add-on
 COPY run.sh /
 COPY requirements.txt /
