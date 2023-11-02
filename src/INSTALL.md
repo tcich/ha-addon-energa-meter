@@ -12,6 +12,8 @@
 ![armv7-shield]
 ![i386-shield]
 
+<a href="https://buycoffee.to/tcich"><img src="../img/logo-buycoffee-wide.jpg" width=200 alt="Postaw kawę"></a>
+
 
 ## O dodatku
 
@@ -99,9 +101,39 @@ gdzie:
 * start_date - początek okresu w milisekundach wg. standardu EPOCH (timestamp)
 * end_date - koniec okresu w milisekundach wg. standardu EPOCH (timestamp)
 
-## Grafana
+## Jak dodać wykres do Grafana
+### Źródło danych
+1) Dodajemy źródło danych Home -> Data sources - Add new datasources: Wyszukujemy JSON API (jeżeli nie ma to musimy dodać)
+2) NAME: ENERGA (1)
+3) URL: http://twoj_addon:8000 (2)
+4) Klikamy Save&test (3)
+5) Uwaga: Jeżeli Grafana jest addonem w HA użyj właściwej nazwy hosta dostępnej w docker.
 
-Instrukcja konfiguracji dla Grafana znajduje się tutaj [link](https://github.com/tcich/ha-addon-energa-meter/tree/e702ed49436fb9e0b675dcac3001bd9de5aab3c0/src/INSTALL.md)
+<img src="img/addon.png" style="width: 80%;" alt="Nazwa hosta">
+
+<img src="img/grafana_01.png" style="width: 80%;" alt="Grafana źródło danych">
+
+
+### Dashboard
+1) Przechodzimy do Dashboards
+2) Klikamy New -> New dashboard -> Add visualization
+3) Wskazujemy Data source: ENERGA
+4) W **Path** wpisujemy: GET: /charts/12335379 (id Twojego licznika)
+5) W **Fields** wpisujemy \$.charts\[\*\].czas typu Time oraz $.charts[*].value typu number z aliasem kWh
+5) W **Params** wpisujemy Key: start_date Value: $__from
+6) W **Params** wpisujemy Key: end_date Value: $__to
+
+
+<img src="img/grafana_06.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_02.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_03.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_04.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_05.png" style="width: 80%;" alt="Grafana">
+
 
 ## Znane problemy
 Czasami w aplikacji Mój Licznik włącza się captha (jeżeli masz dużo danych historycznych lub wielokrotnie instalujesz dodatek)
@@ -110,3 +142,6 @@ Dane wytwórcy (energia oddana oraz bilans) nie są dostępne, prace w tym zakre
 ## Uwagi
 Dostęp do aktualnej wersji API nie jest zabezpieczony tokenem
 Każde przeinstalowanie dodatku pobiera ponownie dane z aplikacji Mój Licznik
+
+<a href="https://buycoffee.to/tcich"><img src="../img/logo-buycoffee-wide.jpg" width=200 alt="Postaw kawę"></a>
+

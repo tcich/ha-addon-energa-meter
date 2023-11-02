@@ -101,9 +101,37 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 | meter_type_url | typ licznika (np. A+: A%2B, A-: A- ) |
 | zone | numer strefy (np. 1, 2) |
 
+## Jak dodać wykres do Grafana
+### Źródło danych
+1) Dodajemy źródło danych Home -> Data sources - Add new datasources: Wyszukujemy JSON API (jeżeli nie ma to musimy dodać)
+2) NAME: ENERGA (1)
+3) URL: http://twoj_addon:8000 (2)
+4) Klikamy Save&test (3)
+5) Uwaga: Jeżeli Grafana jest addonem w HA użyj właściwej nazwy hosta dostępnej w docker.
 
-## Grafana
-Instrukcja konfiguracji dla Grafana znajduje się tutaj [link](https://github.com/tcich/ha-addon-energa-meter/tree/e702ed49436fb9e0b675dcac3001bd9de5aab3c0/srcdev/INSTALL.md)
+<img src="https://github.com/tcich/ha-addon-energa-meter/blob/e702ed49436fb9e0b675dcac3001bd9de5aab3c0/srcdev/img/addon.png" style="width: 80%;" alt="Nazwa hosta">
+
+<img src="img/grafana_01.png" style="width: 80%;" alt="Grafana źródło danych">
+
+
+### Dashboard
+1) Przechodzimy do Dashboards
+2) Klikamy New -> New dashboard -> Add visualization
+3) Wskazujemy Data source: ENERGA
+4) W **Path** wpisujemy: GET: /charts/12335379 (id Twojego licznika)
+5) W **Fields** wpisujemy \$.charts\[\*\].czas typu Time oraz $.charts[*].value typu number z aliasem kWh
+5) W **Params** wpisujemy Key: start_date Value: $__from
+6) W **Params** wpisujemy Key: end_date Value: $__to
+
+<img src="img/grafana_06.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_02.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_03.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_04.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_05.png" style="width: 80%;" alt="Grafana">
 
 
 ## Znane problemy
