@@ -2,6 +2,7 @@
 
 USERNAME="$ENERGA_USERNAME"
 PASSWORD="$ENERGA_PASSWORD"
+LOG_LEVEL="$LOG_LEVEL"
 
 if [ -z "$USERNAME" ]; then
     echo "Błąd: Zmienna ENERGA_USERNAME jest pusta. Proszę podać wartość."

@@ -1,4 +1,7 @@
 ---
 - name: EnergaMeter
-  url: https://github.com/tcich/ha-addon-energa-meter
+  url: https://github.com/tcich/ha-addon-energa-meter/src
+  maintainer: TCICH <https://github.com/tcich/>
+- name: EnergaMeter (dev)
+  url: https://github.com/tcich/ha-addon-energa-meter/src.dev
   maintainer: TCICH <https://github.com/tcich/>

@@ -202,7 +202,7 @@ def charts():
     start_date = request.args.get('start_date', start_time_unix*1000)
     end_date = request.args.get('end_date', current_time_unix*1000)
     mp = request.args.get('mp', None)
-    meter_type = request.args.get('meter_type', None)
+    meter_type_url = request.args.get('meter_type_url', None)
     zone = request.args.get('zone', None) 
 
     query = MainChartTable.select().where((MainChartTable.tm >= int(start_date)) & (MainChartTable.tm <= int(end_date)))
@@ -210,8 +210,8 @@ def charts():
     if mp:
         query = query.where(MainChartTable.mp == mp)
 
-    if meter_type:
-        query = query.where(MainChartTable.meter_type == meter_type)
+    if meter_type_url:
+        query = query.where(MainChartTable.meter_type_url == meter_type_url)
 
     if zone:
         query = query.where(MainChartTable.zone == zone)
