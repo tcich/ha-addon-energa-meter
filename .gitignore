@@ -6,6 +6,7 @@ src/rund.sh
 import.py
 check.py
 database.sqlite
+1database.sqlite
 config.ini
 /Dockerfile
 docker/Dockerfile
