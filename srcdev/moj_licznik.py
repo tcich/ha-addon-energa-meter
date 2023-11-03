@@ -304,7 +304,7 @@ class MojLicznik:
                     cn.measurement_date = c['measurement_date']
                     cn.save()
                     
-                    logger.info(f"Zapisano stan licznika {c['meter_type']} taryfa {c['tariff']} z dnia: {c['measurement_date']} : {c['meter_value']}")
+                    logger.info(f"Zapisano stan licznika {p.id} {c['meter_type']} taryfa {c['tariff']} z dnia: {c['measurement_date']} : {c['meter_value']}")
             except HTTPError as e:
                 logger.error(f"Wystąpił błąd HTTP: {e}")
 
@@ -355,19 +355,20 @@ class MojLicznik:
                 meter.first_date = first_date
                 meter.save()
 
-    def save_main_charts(self, mp, vals, meter_type):
+    def save_main_charts(self, mp, vals, m_type):
         for val in vals:
             #try:
+                logger.info(f"save_main_charts: mp: {mp}, val: {val}, meter_type: {m_type}")
                 z = val["zones"]
                 if z[0]:
                     # MainChartTable.get_or_create(tm = val["tm"], zone = 1, value = z[0], tarAvg=val["tarAvg"], est=val["est"], cplt=val["cplt"])
                     try:
-                        existing_record = MainChartTable.get((MainChartTable.meter_type == meter_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 1))
+                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 1))
                     except MainChartTable.DoesNotExist:
                         # Jeśli rekord nie istnieje, utwórz nowy
                         MainChartTable.create(
                             mp=mp,
-                            meter_type=meter_type,
+                            meter_type=m_type,
                             tm=val["tm"],
                             zone=1,
                             value=z[0],
@@ -378,12 +379,12 @@ class MojLicznik:
                 
                 if z[1]:
                     try:
-                        existing_record = MainChartTable.get((MainChartTable.meter_type == meter_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 2))
+                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 2))
                     except MainChartTable.DoesNotExist:
                         # Jeśli rekord nie istnieje, utwórz nowy
                         MainChartTable.create(
                             mp=mp,
-                            meter_type=meter_type,
+                            meter_type=m_type,
                             tm=val["tm"],
                             zone=2,
                             value=z[1],
@@ -394,12 +395,12 @@ class MojLicznik:
                 
                 if z[2]:
                     try:
-                        existing_record = MainChartTable.get((MainChartTable.meter_type == meter_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 1))
+                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 3))
                     except MainChartTable.DoesNotExist:
                         # Jeśli rekord nie istnieje, utwórz nowy
                         MainChartTable.create(
                             mp=mp,
-                            meter_type=meter_type,
+                            meter_type=m_type,
                             tm=val["tm"],
                             zone=3,
                             value=z[2],
@@ -432,6 +433,7 @@ class MojLicznik:
 
         # meter_type = 'A+'
         chart_url = f"{self.meter_url}/dp/resources/chart?mainChartDate={tsm_date}&type={chart_type}&meterPoint={meter_point}&mo={urllib.parse.quote_plus(meter_type)}"
+        logger.info(f"chart_url: {chart_url}")
         try:
             response = self.session.get(chart_url)
             data = json.loads(response.text)
