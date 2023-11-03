@@ -91,7 +91,7 @@ class MainChartTable(Model):
     class Meta:
         database = db
         table_name = 'CHART'
-        primary_key = CompositeKey('mp', 'zone', 'tm')  
+        primary_key = CompositeKey('mp', 'meter_type', 'zone', 'tm')  
 
 def znajdz_typ_odbiorcy(element):
     typ_odbiorcy = ''
