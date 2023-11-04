@@ -210,7 +210,8 @@ def charts():
         query = query.where(MainChartTable.mp == mp)
 
     if meter_type_url:
-        query = query.where(MainChartTable.meter_type_url == meter_type_url)
+        meter_type = urllib.parse.unquote(meter_type_url)
+        query = query.where(MainChartTable.meter_type == meter_type)
 
     if zone:
         query = query.where(MainChartTable.zone == zone)

@@ -357,7 +357,7 @@ class MojLicznik:
 
     def save_main_charts(self, mp, vals, m_type):
         for val in vals:
-            #try:
+            try:
                 logger.debug(f"save_main_charts: mp: {mp}, val: {val}, meter_type: {m_type}")
                 z = val["zones"]
                 if z[0]:
@@ -409,8 +409,8 @@ class MojLicznik:
                             cplt=val["cplt"]
                         )
                                                         
-            #except:
-            #    pass
+            except Exception as e:
+                logging.error(f"Wystąpił błąd: {str(e)}")
 
         return None
     

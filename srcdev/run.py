@@ -36,7 +36,7 @@ def periodic_task():
     startup_task_completed.wait()
     while True:
         try:    
-            waiting_seconds = 600
+            waiting_seconds = 1200
             logger.info(f"Oczekiwanie...")
             logger.debug(f"Czekam {waiting_seconds} sekund.")
             time.sleep(waiting_seconds)        
