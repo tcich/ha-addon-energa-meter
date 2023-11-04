@@ -194,6 +194,8 @@ def get_countners(ppe_id, meter_type_url, tariff):
 @app.route('/charts', methods=['GET'])
 @app.route('/charts/', methods=['GET'])
 def charts():
+    
+
     current_time = datetime.datetime.now()
     current_time_unix = time.mktime(current_time.timetuple())
     start_time = current_time - datetime.timedelta(days=1)
@@ -202,10 +204,14 @@ def charts():
     end_date = request.args.get('end_date', current_time_unix*1000)
     mp = request.args.get('mp', None)
     meter_type_url = request.args.get('meter_type_url', None)
-    zone = request.args.get('zone', None) 
-
+    zone = request.args.get('zone', None)
+    negative = request.args.get('negative', type=bool, default=False) 
+    logger.debug(f"API: GET /charts - {start_date} - {end_date}")
     query = MainChartTable.select().where((MainChartTable.tm >= int(start_date)) & (MainChartTable.tm <= int(end_date)))
-
+    logger.debug(f"{query}")
+    factor = 1
+    if negative:
+         factor = -1
     if mp:
         query = query.where(MainChartTable.mp == mp)
 
@@ -228,10 +234,9 @@ def charts():
             'zone': p.zone,
             'time_tm': p.tm,
             'time': czas,
-            'value': p.value
+            'value': p.value * factor
         }
         charts.append(chart)
     end_time = time.time()
-    logger.debug(f"API: GET /charts - {start_date} - {end_date}")
 
     return jsonify({'charts': charts})

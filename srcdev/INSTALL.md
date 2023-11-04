@@ -99,6 +99,7 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 | mp | numer licznika |
 | meter_type_url | typ licznika (np. A+: A%2B, A-: A- ) |
 | zone | numer strefy (np. 1, 2) |
+| negative | dodanie parametru z dowolną wartością powoduje, że pomiar jest wartością ujemną|
 
 ## Jak dodać wykres do Grafana
 ### Źródło danych
