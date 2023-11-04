@@ -14,14 +14,11 @@ if [ -z "$PASSWORD" ]; then
     exit 1
 fi
 
-echo "Uruchamiam API"
-python api.py &
-echo "Uruchamiam MAIN"
-python main.py
-echo "Uruchamiam CRON"
+if [ -z "$LOG_LEVEL" ]; then
+    echo "Błąd: Zmienna LOG_LEVEL jest pusta. Przypisuję wartość domyślną INFO."
+    LOG_LEVEL="INFO"
+fi
 
-while true; do
-    python cron.py
-    echo "Czekam..."
-    sleep 1800
-done
+echo "Uruchamiam aplikację"
+python run.py
+echo "..."

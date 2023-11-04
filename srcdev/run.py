@@ -72,7 +72,7 @@ if __name__ == "__main__":
     else:
         username = os.getenv("USERNAME")
         password = os.getenv("PASSWORD")
-        log_level = os.getenv("LOGLEVEL")
+        log_level = os.getenv("LOG_LEVEL")
 
     logger_name = "energaMeter"
 

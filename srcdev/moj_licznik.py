@@ -358,7 +358,7 @@ class MojLicznik:
     def save_main_charts(self, mp, vals, m_type):
         for val in vals:
             #try:
-                logger.info(f"save_main_charts: mp: {mp}, val: {val}, meter_type: {m_type}")
+                logger.debug(f"save_main_charts: mp: {mp}, val: {val}, meter_type: {m_type}")
                 z = val["zones"]
                 if z[0]:
                     # MainChartTable.get_or_create(tm = val["tm"], zone = 1, value = z[0], tarAvg=val["tarAvg"], est=val["est"], cplt=val["cplt"])
@@ -433,7 +433,7 @@ class MojLicznik:
 
         # meter_type = 'A+'
         chart_url = f"{self.meter_url}/dp/resources/chart?mainChartDate={tsm_date}&type={chart_type}&meterPoint={meter_point}&mo={urllib.parse.quote_plus(meter_type)}"
-        logger.info(f"chart_url: {chart_url}")
+        logger.debug(f"chart_url: {chart_url}")
         try:
             response = self.session.get(chart_url)
             data = json.loads(response.text)

@@ -13,7 +13,6 @@
 ![i386-shield]
 
 
-
 [kawa-logo]: https://github.com/tcich/ha-addon-energa-meter/blob/main/img/buycoffeeto-btn-primary-outline.png
 [kawa]: https://buycoffee.to/tcich
 

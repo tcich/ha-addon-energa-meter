@@ -76,6 +76,20 @@ sensor:
     unit_of_measurement: "kWh"
     value_template: "{{ value_json.countner.meter_value | round(2) }}"       
 ```    
+## Suma liczników, bilans
+W celu uzyskania sumy liczników, bilansu, itp należy użyć templates:
+```
+template:
+  - sensor:
+      - name: "Suma liczników"
+        unit_of_measurement: "kWh"
+        state: "{{ states('sensor.123456789_apt1') | float + states('sensor.123456789_apt2') | float | round(2) }}"
+  - sensor:
+      - name: "Bilans/różnica liczników"
+        unit_of_measurement: "kWh"
+        state: "{{ states('sensor.123456789_apt1') | float - states('sensor.123456789_apt2') | float | round(2) }}"        
+```
+
 
 ### Opis konfiguracji
 | element konfiguracji | Opis |
