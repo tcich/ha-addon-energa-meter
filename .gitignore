@@ -10,6 +10,9 @@ database.sqlite
 config.ini
 /Dockerfile
 docker/Dockerfile
+docker_build.sh
+docker/docker_build.sh
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
