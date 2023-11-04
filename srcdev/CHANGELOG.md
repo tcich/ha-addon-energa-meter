@@ -1,4 +1,8 @@
 # EnergaMeter (dev)
+## v0.1.8 [2023-11-04]
+- Dodano możliwość odwrócenia znaku wartości pomiaru
+## v0.1.4 - v0.1.7 [2023-11-03]
+- Drobne poprawki
 ## v0.1.3 [2023-10-31]
 - Dodano obsługę liczników wytwórcy (Uwaga: zmiana struktury JSON)
 ## v0.1.2 [2023-10-23]

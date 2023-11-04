@@ -118,7 +118,9 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 1) Przechodzimy do Dashboards
 2) Klikamy New -> New dashboard -> Add visualization
 3) Wskazujemy Data source: ENERGA
-4) W **Path** wpisujemy: GET: /charts/12335379 (id Twojego licznika)
+4) W **Path** wpisujemy: GET: /charts
+
+ (id Twojego licznika)
 5) W **Fields** wpisujemy \$.charts\[\*\].czas typu Time oraz $.charts[*].value typu number z aliasem kWh
 5) W **Params** wpisujemy Key: start_date Value: $__from
 6) W **Params** wpisujemy Key: end_date Value: $__to
@@ -133,10 +135,23 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 
 <img src="img/grafana_05.png" style="width: 80%;" alt="Grafana">
 
+7) W **Params** wpisujemy Key: meter_type_url Value: A+ lub A- jeżeli mamy energię pobieraną i oddawaną, w takim przypadku tworzymy również oddzielne **Query** dla A+ i A-
+
+<img src="img/grafana_07.png" style="width: 80%;" alt="Grafana">
+
+8) W **Params** wpisujemy Key: negative Value: OK (może być dowolna wartość) jeżeli chcemy aby wykres był z wartościami ujemnymi (poniżej osi X)
+
+<img src="img/grafana_08.png" style="width: 80%;" alt="Grafana">
+
+9) W **Params** aby uzyskać bilans energii należy dodać **Transform**, przy czym wartość energii oddawanej powinna być jako energia ujemna (parametr negative)
+
+<img src="img/grafana_09.png" style="width: 80%;" alt="Grafana">
+
+<img src="img/grafana_10.png" style="width: 80%;" alt="Grafana">
 
 ## Znane problemy
-Czasami w aplikacji Mój Licznik włącza się captha (jeżeli masz dużo danych historycznych lub wielokrotnie instalujesz dodatek)
-Dane wytwórcy (energia oddana oraz bilans) nie są dostępne, prace w tym zakresie trwają.
+* Czasami w aplikacji Mój Licznik włącza się captha (jeżeli masz dużo danych historycznych lub wielokrotnie instalujesz dodatek) - należy poczekać kilka godzin, problem rozwiąże się sam
+
 
 ## Uwagi
 Dostęp do aktualnej wersji API nie jest zabezpieczony tokenem
