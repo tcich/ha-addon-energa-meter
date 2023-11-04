@@ -61,7 +61,7 @@ if __name__ == "__main__":
     plik = Path('config.ini')
     username = None
     password = None
-    log_level = None
+    log_level = "INFO"
 
     if plik.is_file():
         config = configparser.ConfigParser()
