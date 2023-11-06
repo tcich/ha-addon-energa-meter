@@ -125,4 +125,3 @@ Dane wytwórcy (energia oddana oraz bilans) nie są dostępne, prace w tym zakre
 ## Uwagi
 Dostęp do aktualnej wersji API nie jest zabezpieczony tokenem
 Każde przeinstalowanie dodatku pobiera ponownie dane z aplikacji Mój Licznik
-
