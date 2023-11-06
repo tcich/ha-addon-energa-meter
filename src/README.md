@@ -115,7 +115,7 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 
 
 ## Grafana
-Instrukcja konfiguracji dla Grafana znajduje się tutaj [link](https://github.com/tcich/ha-addon-energa-meter/tree/e702ed49436fb9e0b675dcac3001bd9de5aab3c0/src/INSTALL.md)
+Instrukcja konfiguracji dla Grafana znajduje się tutaj [link](https://github.com/tcich/ha-addon-energa-meter/blob/main/src/INSTALL.md)
 
 
 ## Znane problemy
