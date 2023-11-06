@@ -152,7 +152,6 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 ## Znane problemy
 * Czasami w aplikacji Mój Licznik włącza się captha (jeżeli masz dużo danych historycznych lub wielokrotnie instalujesz dodatek) - należy poczekać kilka godzin, problem rozwiąże się sam
 
-
 ## Uwagi
 Dostęp do aktualnej wersji API nie jest zabezpieczony tokenem
 Każde przeinstalowanie dodatku pobiera ponownie dane z aplikacji Mój Licznik
