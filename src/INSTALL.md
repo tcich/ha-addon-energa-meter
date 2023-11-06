@@ -158,4 +158,3 @@ Dostęp do aktualnej wersji API nie jest zabezpieczony tokenem
 Każde przeinstalowanie dodatku pobiera ponownie dane z aplikacji Mój Licznik
 
 <a href="https://buycoffee.to/tcich"><img src="../img/logo-buycoffee-wide.jpg" width=200 alt="Postaw kawę"></a>
-
