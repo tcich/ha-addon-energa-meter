@@ -1,6 +1,6 @@
 [![ha_badge](https://img.shields.io/badge/Home%20Assistant-Add%20On-blue.svg)](https://www.home-assistant.io/)
 # [Energa meter](https://github.com/tcich/ha-addon-energa-meter) Home Assistant add-on
-# Wersja dev
+
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 [armv6-shield]: https://img.shields.io/badge/armv6-yes-green.svg
@@ -20,9 +20,6 @@
 ## O dodatku
 
 To jest dodatek dla [Home Assistant](https://www.home-assistant.io/). Instalacja dodatku [Energa meter](https://github.com/tcich/ha-addon-energa-meter) umożliwia cykliczne pobieranie danych z aplikacji [Mój Licznik - Energa](https://mojlicznik.energa-operator.pl) udostępnianej klientom Operatora energetycznego Energa.
-
-### Wersja dev
-Wersja dev jest wersją developeską, nie należy jej używać w produkcyjnej wersji HA, może powodować różne problemy, może nie działać.
 
 ## Instalacja
 1) Dodaj repozytorium do repozytoriów dodatków swojego HA za pomocą poniższego przycisku
