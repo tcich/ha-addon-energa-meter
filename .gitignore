@@ -3,6 +3,7 @@
 src/*.sqlite
 src/config.ini
 src/rund.sh
+src.old/*
 import.py
 check.py
 *.sqlite
