@@ -1,12 +1,11 @@
 # Energa meter project files
 
-src/database.sqlite
+src/*.sqlite
 src/config.ini
 src/rund.sh
 import.py
 check.py
-database.sqlite
-1database.sqlite
+*.sqlite
 config.ini
 /Dockerfile
 docker/Dockerfile
