@@ -43,7 +43,7 @@ Lub zainstaluj manualnie z Ustawienia -> Dodatki -> Sklep z dodatkami -> ⁞ (Me
 Aby ruchomić wersję docker należy skorzystać z polecenia poniżej
 
 ```
-docker run -p 8000:8000 -e ENERGA_USERNAME=LoginEnerga  -e ENERGA_PASSWORD=HasloEnerga tomcic/energa-meter:v0.1.0
+docker run -p 8000:8000 -e ENERGA_USERNAME=LoginEnerga  -e ENERGA_PASSWORD=HasloEnerga tomcic/energa-meter:v1.0.0
 ```
 
 Wymagane parametry:
