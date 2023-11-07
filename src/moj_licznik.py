@@ -490,10 +490,15 @@ class MojLicznik:
                     current_date = meter.last_update_date - timedelta(days=1)
                 
                 while current_date <= date.today():
-                    try:
-                        record = ChartTable.get(id=p.id, meter_type=meter_type, year=current_date.year, month=current_date.month, day=current_date.day)
-                        # Jeśli rekord o określonych wartościach klucza głównego istnieje, zostanie pobrany.
-                        logger.debug(f"Posiadam dane historyczne dla {p.name} ({p.id}) typ: {meter_type} na dzień: {current_date}")
+                    try:    
+                        if full_mode:                   
+                            record = ChartTable.get(id=p.id, meter_type=meter_type, year=current_date.year, month=current_date.month, day=current_date.day)
+                            logger.debug(f"Posiadam dane historyczne dla {p.name} ({p.id}) typ: {meter_type} na dzień: {current_date}")
+                        else:
+                            self.download_chart(ChartType.DAY, current_date, p.id, meter_type) 
+                            logger.debug(f"Aktualizuję dane dla {p.name} ({p.id}) typ: {meter_type} na dzień: {current_date}")
+
+
                     except ChartTable.DoesNotExist:
                         self.download_chart(ChartType.DAY, current_date, p.id, meter_type) 
                         logger.debug(f"Pobieram dane historyczne dla {p.name} ({p.id}) typ: {meter_type} na dzień: {current_date}")
