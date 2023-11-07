@@ -95,7 +95,7 @@ template:
 | name: "A+ Taryfa 1"    | Nazwa sensora, wpisz dowolną|
 | unique_id   | Unikalny ID sensora, nie mogą być w systemie dwa sensory z tym samym ID|
 | unit_of_measurement: "kWh"   | Jednostka miary, nie zmieniaj chyba, że wiesz co robisz|
-| value_template: "{{ value_json.meter.countner.meter_value \| round(2) }}"   | Zaokrąglony do dwóch miejsc po przecinku stan sensora|
+| value_template: "{{ value_json.countner.meter_value \| round(2) }}"   | Zaokrąglony do dwóch miejsc po przecinku stan sensora|
 
 ## API dla wykresów, np. Grafana
 Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assistant:8000/charts/12729?start_date=1695332400129&end_date=1697924583285&mp=123456789&zone=1
