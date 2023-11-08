@@ -7,7 +7,8 @@ src.old/*
 src/dbinit.py
 import.py
 check.py
-*.sqlite
+database.sqlite
+*database.sqlite
 config.ini
 /Dockerfile
 docker/Dockerfile
