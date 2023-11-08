@@ -1,6 +1,6 @@
 # Energa meter project files
 
-src/*.sqlite
+src/*database.sqlite
 src/config.ini
 src/rund.sh
 src.old/*
