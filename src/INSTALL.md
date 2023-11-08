@@ -119,7 +119,7 @@ Aby pobrać dane z API w formacie JSON należy użyć adresu http://home_assista
 4) W **Path** wpisujemy: GET: /charts
 
  (id Twojego licznika)
-5) W **Fields** wpisujemy \$.charts\[\*\].czas typu Time oraz $.charts[*].value typu number z aliasem kWh
+5) W **Fields** wpisujemy \$.charts\[\*\].time typu Time oraz $.charts[*].value typu number z aliasem kWh
 5) W **Params** wpisujemy Key: start_date Value: $__from
 6) W **Params** wpisujemy Key: end_date Value: $__to
 
