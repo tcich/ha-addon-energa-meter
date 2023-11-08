@@ -4,6 +4,7 @@ src/*.sqlite
 src/config.ini
 src/rund.sh
 src.old/*
+src/dbinit.py
 import.py
 check.py
 *.sqlite

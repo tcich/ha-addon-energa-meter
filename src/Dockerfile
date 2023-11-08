@@ -12,6 +12,7 @@ COPY main.py /
 COPY api.py /
 COPY moj_licznik.py /
 COPY log_config.py /
+COPY database_empty.sqlite /database.sqlite
 RUN chmod a+x /run.sh
 RUN pip install -r requirements.txt
 
