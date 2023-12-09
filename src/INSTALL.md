@@ -69,6 +69,12 @@ sensor:
     unit_of_measurement: "kWh"
     value_template: "{{ value_json.countner.meter_value | round(2) }}"   
   - platform: rest
+    resource: http://localhost:8000/123456789/A-/1
+    name: "A- Taryfa 1"
+    unique_id: 123456789_aot1
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json.countner.meter_value | round(2) }}"       
+  - platform: rest
     resource: http://localhost:8000/123456789/A%2B/2
     name: "A+ Taryfa 2"
     unique_id: 123456789_apt2
