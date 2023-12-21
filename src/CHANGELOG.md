@@ -1,4 +1,6 @@
 # EnergaMeter
+## v0.1.1 [2023-12-21]
+- Poprawiony błąd związany z uruchamianiem dodatku
 ## v1.0.0 [2023-11-06]
 - Pierwsza wersja stabilna
 - Zmieniono strukturę danych API (wymagana aktualizacja configuration.yaml oraz Grafana do nowego formatu danych)
