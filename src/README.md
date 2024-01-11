@@ -123,7 +123,6 @@ Instrukcja konfiguracji dla Grafana znajduje się tutaj [link](https://github.co
 
 ## Znane problemy
 Czasami w aplikacji Mój Licznik włącza się captha (jeżeli masz dużo danych historycznych lub wielokrotnie instalujesz dodatek)
-Dane wytwórcy (energia oddana oraz bilans) nie są dostępne, prace w tym zakresie trwają.
 
 ## Uwagi
 Dostęp do aktualnej wersji API nie jest zabezpieczony tokenem
