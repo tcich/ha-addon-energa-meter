@@ -47,6 +47,11 @@ Wymagane parametry:
 * ENERGA_USERNAME - nazwa użytkownika w aplikacji Energa Mój licznik
 * ENERGA_PASSWORD - hasło użytkownika w aplikacji Energa Mój licznik
 
+Opcjonalne parametry:
+
+* POSTGRESQL_CONNSTRING - namiar na bazę PostgreSQL do przechowywania odczytów;
+format opisany w [dokumentacji PGSQL](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)
+(przykładowo `postgresql://uzytkownik:haslo@serwer/mojlicznik`)
 
 ## Konfiguracja sensorów
 Do HA możesz dodać sensory, które zawierają informacje udostępniane przez API

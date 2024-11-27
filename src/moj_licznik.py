@@ -1,18 +1,29 @@
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, PostgresqlDatabase
+from playhouse.shortcuts import ReconnectMixin
 from datetime import datetime, timedelta, date
 import calendar, requests, re, time, json, os, logging
 import http.cookiejar as cookiejar
 from requests.exceptions import HTTPError
 from bs4 import BeautifulSoup
 from enum import Enum
-from peewee import AutoField, Model, CharField, IntegerField, DateField, BooleanField, CompositeKey, DecimalField, ForeignKeyField, SQL
+from peewee import AutoField, Model, CharField, IntegerField, DateField, BooleanField, CompositeKey, DecimalField, ForeignKeyField, SQL, TextField, TimestampField
 import urllib.parse
 
 logger = logging.getLogger("energaMeter")
 
-path = os.path.dirname(os.path.abspath(__file__))
-db_file = 'database.sqlite'
-db = SqliteDatabase(os.path.join(path, db_file))
+class ReconnectPostgresqlDatabase(ReconnectMixin, PostgresqlDatabase):
+    pass
+
+if postgresql_connstring := os.getenv("POSTGRESQL_CONNSTRING"):
+    from psycopg2.extensions import parse_dsn
+    db_name = parse_dsn(postgresql_connstring)['dbname']
+    db_host = parse_dsn(postgresql_connstring)['host']
+    db = ReconnectPostgresqlDatabase(db_name, dsn=postgresql_connstring)
+    logger.info(f"Używam bazy PostgreSQL „{db_name}” na {db_host}")
+else:
+    path = os.path.dirname(os.path.abspath(__file__))
+    db_file = 'data/database.sqlite'
+    db = SqliteDatabase(os.path.join(path, db_file))
 
 class ChartType(Enum):
     DAY = "DAY"
@@ -31,7 +42,7 @@ class PPETable(Model):
     class Meta:
         database = db
         table_name = 'PPE'
-        constraints = [SQL('UNIQUE (ppe, tariffCode)')]
+        constraints = [SQL('UNIQUE ("ppe", "tariffCode")')]
 
 class MeterTable(Model):
     id = AutoField() # Meter point
@@ -43,7 +54,7 @@ class MeterTable(Model):
     class Meta:
         database = db
         table_name = 'METER'
-        constraints = [SQL('UNIQUE (ppe_id, meter_type)')]
+        constraints = [SQL('UNIQUE ("ppe_id", "meter_type")')]
 
 class CounterTable(Model):
     id = AutoField()
@@ -71,7 +82,7 @@ class ChartTable(Model):
     year = IntegerField()
     month = IntegerField(null=True)
     day = IntegerField(null=True)
-    value =CharField()
+    value = TextField()
 
     class Meta:
         database = db
@@ -82,7 +93,7 @@ class MainChartTable(Model):
     mp = CharField()
     meter_type = CharField() 
     zone = IntegerField()
-    tm = IntegerField()
+    tm = TimestampField()
     value = DecimalField(max_digits=20, decimal_places=16, null=True)
     tarAvg = DecimalField(max_digits=20, decimal_places=16, null=True)
     est = BooleanField(default=False)
@@ -360,16 +371,17 @@ class MojLicznik:
             try:
                 logger.debug(f"save_main_charts: mp: {mp}, val: {val}, meter_type: {m_type}")
                 z = val["zones"]
+                tm = int(val["tm"]) / 1000 # convert JS timestamp (milliseconds) to unix (seconds)
                 if z[0]:
                     # MainChartTable.get_or_create(tm = val["tm"], zone = 1, value = z[0], tarAvg=val["tarAvg"], est=val["est"], cplt=val["cplt"])
                     try:
-                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 1))
+                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == tm) & (MainChartTable.zone == 1))
                     except MainChartTable.DoesNotExist:
                         # Jeśli rekord nie istnieje, utwórz nowy
                         MainChartTable.create(
                             mp=mp,
                             meter_type=m_type,
-                            tm=val["tm"],
+                            tm=tm,
                             zone=1,
                             value=z[0],
                             tarAvg=val["tarAvg"],
@@ -379,13 +391,13 @@ class MojLicznik:
                 
                 if z[1]:
                     try:
-                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 2))
+                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == tm) & (MainChartTable.zone == 2))
                     except MainChartTable.DoesNotExist:
                         # Jeśli rekord nie istnieje, utwórz nowy
                         MainChartTable.create(
                             mp=mp,
                             meter_type=m_type,
-                            tm=val["tm"],
+                            tm=tm,
                             zone=2,
                             value=z[1],
                             tarAvg=val["tarAvg"],
@@ -395,13 +407,13 @@ class MojLicznik:
                 
                 if z[2]:
                     try:
-                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == val["tm"]) & (MainChartTable.zone == 3))
+                        existing_record = MainChartTable.get((MainChartTable.meter_type == m_type) & (MainChartTable.mp == mp) & (MainChartTable.tm == tm) & (MainChartTable.zone == 3))
                     except MainChartTable.DoesNotExist:
                         # Jeśli rekord nie istnieje, utwórz nowy
                         MainChartTable.create(
                             mp=mp,
                             meter_type=m_type,
-                            tm=val["tm"],
+                            tm=tm,
                             zone=3,
                             value=z[2],
                             tarAvg=val["tarAvg"],
@@ -410,7 +422,7 @@ class MojLicznik:
                         )
                                                         
             except Exception as e:
-                logging.error(f"Wystąpił błąd: {str(e)}")
+                logger.error(f"Wystąpił błąd: {str(e)}")
 
         return None
     

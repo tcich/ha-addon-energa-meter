@@ -13,7 +13,7 @@ COPY main.py .
 COPY api.py .
 COPY moj_licznik.py .
 COPY log_config.py .
-COPY database_empty.sqlite database.sqlite
+COPY database_empty.sqlite data/database.sqlite
 RUN chmod a+x run.sh
 
 RUN apk add --update --no-cache py3-pip && \
